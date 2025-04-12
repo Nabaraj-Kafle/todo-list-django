@@ -1,0 +1,44 @@
+{% extends 'todoapp/main.html' %}
+{% block content %}
+
+
+<h3>task form</h3>
+<a href="{% url 'tasks' %}">Go Back</a>
+
+<form method="POST">
+    {% csrf_token %}
+    
+    <!-- Title Field -->
+    <p>Title: <input type="text" name="title" value="{% if task %}{{ task.title }}{% endif %}"></p>
+    
+    <!-- Description Field -->
+    <p>Description: <textarea name="description" cols="40" rows="10">{% if task %}{{ task.description }}{% endif %}</textarea></p>
+
+    
+
+    <!-- Due Date Field -->
+    <p>Due Date: <input type="date" name="due_date" value="{% if task %}{{ task.due_date|date:'Y-m-d' }}{% endif %}"></p>
+
+    <!-- Category Field (Dropdown) -->
+    <p>Category:
+        <select name="category">
+            <option value="work" {% if task and task.category == 'work' %}selected{% endif %}>Work</option>
+            <option value="grocery" {% if task and task.category == 'grocery' %}selected{% endif %}>Grocery</option>
+            <option value="study" {% if task and task.category == 'study' %}selected{% endif %}>Study</option>
+            <option value="other" {% if task and task.category == 'other' %}selected{% endif %}>Other</option>
+        </select>
+    </p>
+
+    <!-- Status Field (Dropdown) -->
+    <p>Status:
+        <select name="status">
+            <option value="pending" {% if task and task.status == 'pending' %}selected{% endif %}>Pending</option>
+            <option value="in_progress" {% if task and task.status == 'in_progress' %}selected{% endif %}>In Progress</option>
+            <option value="completed" {% if task and task.status == 'completed' %}selected{% endif %}>Completed</option>
+        </select>
+    </p>
+
+    <input type="submit" value="{% if task %}Update{% else %}Create{% endif %} Task">
+</form>
+
+{% endblock content %}
